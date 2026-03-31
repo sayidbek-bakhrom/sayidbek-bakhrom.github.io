@@ -1,0 +1,97 @@
+:root {
+    --bg: #0f172a;
+    --text: #e2e8f0;
+    --accent: #38bdf8;
+    --card: #1e293b;
+}
+
+.light {
+    --bg: #ffffff;
+    --text: #0f172a;
+    --card: #f1f5f9;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', sans-serif;
+    transition: 0.3s;
+}
+
+.hero {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.subtitle {
+    color: var(--accent);
+    font-size: 20px;
+}
+
+.intro {
+    max-width: 600px;
+    margin: 10px auto;
+    opacity: 0.8;
+}
+
+.section {
+    padding: 40px 10%;
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: var(--accent);
+}
+
+.card {
+    background: var(--card);
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    transition: 0.3s;
+}
+
+/* 🔥 Hover Glow */
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px var(--accent);
+}
+
+/* Skills */
+.skills span {
+    display: inline-block;
+    padding: 8px 12px;
+    margin: 5px;
+    background: var(--accent);
+    color: #000;
+    border-radius: 20px;
+}
+
+/* 🌙 Toggle Button */
+#theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* 🎬 Scroll Animation */
+.reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: 0.6s ease;
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    opacity: 0.7;
+}
