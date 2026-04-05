@@ -101,7 +101,7 @@ function getAIMove() {
 
   // MEDIUM 🟡 → 50% smart, 50% random
   if (difficulty === "medium") {
-    if (Math.random() < 0.5) {
+    if (Math.random() < 0.2) {
       return empty[Math.floor(Math.random() * empty.length)];
     } else {
       return minimax([...boardState], ai).index;
