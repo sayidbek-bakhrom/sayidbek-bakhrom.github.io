@@ -9,6 +9,9 @@ let ai = "O";
 let gameActive = true;
 let winningPattern = null;
 
+// 🎯 Choose difficulty here: "easy" or "medium"
+let difficulty = "medium";
+
 const winPatterns = [
   [0,1,2],[3,4,5],[6,7,8],
   [0,3,6],[1,4,7],[2,5,8],
@@ -42,8 +45,8 @@ function handleClick(e) {
   if (!gameActive) return;
 
   setTimeout(() => {
-    const bestMove = minimax(boardState, ai).index;
-    makeMove(bestMove, ai);
+    const move = getAIMove();
+    makeMove(move, ai);
   }, 300);
 }
 
@@ -67,7 +70,7 @@ function makeMove(index, player) {
   }
 }
 
-// Check winner and store pattern
+// Check winner (main board)
 function checkWinner(player) {
   for (let pattern of winPatterns) {
     if (pattern.every(i => boardState[i] === player)) {
@@ -76,6 +79,87 @@ function checkWinner(player) {
     }
   }
   return false;
+}
+
+// ✅ Correct winner check for minimax
+function checkWinnerForBoard(board, player) {
+  return winPatterns.some(pattern =>
+    pattern.every(i => board[i] === player)
+  );
+}
+
+// 🎮 AI Move Logic
+function getAIMove() {
+  const empty = boardState
+    .map((val, i) => val === "" ? i : null)
+    .filter(v => v !== null);
+
+  // EASY 🟢 → random
+  if (difficulty === "easy") {
+    return empty[Math.floor(Math.random() * empty.length)];
+  }
+
+  // MEDIUM 🟡 → 50% smart, 50% random
+  if (difficulty === "medium") {
+    if (Math.random() < 0.5) {
+      return empty[Math.floor(Math.random() * empty.length)];
+    } else {
+      return minimax([...boardState], ai).index;
+    }
+  }
+}
+
+// Minimax AI (fixed)
+function minimax(newBoard, player) {
+  const empty = newBoard
+    .map((val, i) => val === "" ? i : null)
+    .filter(v => v !== null);
+
+  if (checkWinnerForBoard(newBoard, human)) return { score: -10 };
+  if (checkWinnerForBoard(newBoard, ai)) return { score: 10 };
+  if (empty.length === 0) return { score: 0 };
+
+  let moves = [];
+
+  for (let i = 0; i < empty.length; i++) {
+    let move = {};
+    move.index = empty[i];
+
+    newBoard[empty[i]] = player;
+
+    if (player === ai) {
+      let result = minimax(newBoard, human);
+      move.score = result.score;
+    } else {
+      let result = minimax(newBoard, ai);
+      move.score = result.score;
+    }
+
+    newBoard[empty[i]] = "";
+    moves.push(move);
+  }
+
+  let bestMove;
+
+  if (player === ai) {
+    let bestScore = -Infinity;
+    for (let move of moves) {
+      if (move.score > bestScore) {
+        bestScore = move.score;
+        bestMove = move;
+      }
+    }
+  } else {
+    let bestScore = Infinity;
+    for (let move of moves) {
+      if (move.score < bestScore) {
+        bestScore = move.score;
+        bestMove = move;
+      }
+    }
+  }
+
+  return bestMove;
 }
 
 // Draw winning line
@@ -103,57 +187,6 @@ function drawWinningLine() {
   line.style.transform = `translate(${x1}px, ${y1}px) rotate(${angle}deg)`;
 
   board.appendChild(line);
-}
-
-// Minimax AI
-function minimax(newBoard, player) {
-  const empty = newBoard
-    .map((val, i) => val === "" ? i : null)
-    .filter(v => v !== null);
-
-  if (checkWinner(human)) return { score: -10 };
-  if (checkWinner(ai)) return { score: 10 };
-  if (empty.length === 0) return { score: 0 };
-
-  let moves = [];
-
-  for (let i = 0; i < empty.length; i++) {
-    let move = {};
-    move.index = empty[i];
-    newBoard[empty[i]] = player;
-
-    if (player === ai) {
-      let result = minimax(newBoard, human);
-      move.score = result.score;
-    } else {
-      let result = minimax(newBoard, ai);
-      move.score = result.score;
-    }
-
-    newBoard[empty[i]] = "";
-    moves.push(move);
-  }
-
-  let bestMove;
-  if (player === ai) {
-    let bestScore = -Infinity;
-    for (let move of moves) {
-      if (move.score > bestScore) {
-        bestScore = move.score;
-        bestMove = move;
-      }
-    }
-  } else {
-    let bestScore = Infinity;
-    for (let move of moves) {
-      if (move.score < bestScore) {
-        bestScore = move.score;
-        bestMove = move;
-      }
-    }
-  }
-
-  return bestMove;
 }
 
 // Restart game
