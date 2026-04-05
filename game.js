@@ -54,15 +54,15 @@ function makeMove(index, player) {
 
   if (checkWinner(player)) {
     statusText.textContent = player === human
-      ? "🎉 You Win!"
-      : "🤖 Computer Wins!";
+      ? "🎉 Sen yutding!"
+      : "🤖 Kompyuter yutdi!";
     gameActive = false;
     drawWinningLine();
     return;
   }
 
   if (!boardState.includes("")) {
-    statusText.textContent = "🤝 Draw!";
+    statusText.textContent = "🤝 Durrang!";
     gameActive = false;
   }
 }
@@ -161,10 +161,10 @@ restartBtn.addEventListener("click", () => {
   boardState = ["", "", "", "", "", "", "", "", ""];
   gameActive = true;
   winningPattern = null;
-  statusText.textContent = "Your Turn (X)";
+  statusText.textContent = "Sening navbating (X)";
   createBoard();
 });
 
 // Init
 createBoard();
-statusText.textContent = "Your Turn (X)";
+statusText.textContent = "Sening navbating (X)";
